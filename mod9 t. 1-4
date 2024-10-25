@@ -1,0 +1,75 @@
+import random
+
+class Auto:
+    def __init__(self, rek_nro, huippunopeus, nopeus, matka, kuljettaja):
+        self.rek_nro = rek_nro
+        self.huippunopeus = huippunopeus
+        self.nopeus = 0
+        self.matka = 0
+        self.kuljetteja = kuljettaja
+
+    def tulosta_kaikki(self):
+        print(f"Auton tiedot: rekisterinumero: {self.rek_nro}, huippunopeus: {self.huippunopeus} km/h, nopeus: {self.nopeus} km/h, matka: {self.matka} km")
+
+    def kiihdytä(self,nopeuden_muutos):
+        self.nopeus = self.nopeus + nopeuden_muutos
+
+        if self.nopeus > self.huippunopeus:
+            self.nopeus = self.huippunopeus
+            print(f"Saavutit huippunopeuden {self.huippunopeus}, etkä voi enää kiihdyttää!")
+
+        if self.nopeus < 0:
+            self.nopeus = 0
+
+        print(f"Kiihdytit auton {self.rek_nro} nopeutta. Nopeus tällä hetkellä {self.nopeus} km/h")
+
+
+    def hätäjarrutus(self):
+        self.nopeus = self.nopeus - 200
+
+        if self.nopeus < 0:
+                self.nopeus = 0
+
+        print(f"Teit hätäjarrutuksen. Auton {self.rek_nro} nopeus tällä hetkellä: {self.nopeus}")
+
+
+    def kulje(self, aika):
+        self.matka += aika * self.nopeus
+
+
+class Kuljettaja:
+    def __init__(self, nimi, ikä, auto):
+        self.nimi = nimi
+        self.ikä = ikä
+        self.auto = auto
+
+    def aja(self):
+        print(f"Olen {self.nimi}, {self.ikä} ja ajan autoa {self.auto.rek_nro}")
+        self.auto.tulosta_kaikki()
+
+
+a1=Auto("ABC-123", random.randint (100,200), 0, 0, "Mikkonen")
+a2=Auto("XYZ-456", random.randint (100,200), 0, 0,"Räikkönen")
+kuski1=Kuljettaja("Mikkonen", 22, a1)
+kuski2=Kuljettaja("Räikkönen", 47, a2)
+
+print("Kilpailu alkaa")
+
+kuski1.aja()
+kuski2.aja()
+
+while a2.matka < 10000 and a1.matka < 10000:
+    a2.kiihdytä(random.randint (-10,15))
+    a1.kiihdytä(random.randint (-10,15))
+    a2.kulje(1)
+    a1.kulje(1)
+
+    if a2.matka >= 10000 and a1.matka <= 10000:
+        print(f"{kuski2.nimi} voitti kilpailun!")
+        break
+    if a2.matka <= 10000 and a1.matka >= 10000:
+        print(f"{kuski1.nimi} voitti kilpailun!")
+        break
+
+kuski1.aja()
+kuski2.aja()
